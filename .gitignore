@@ -1,0 +1,4 @@
+# generated dir
+.idea/
+
+service/**/bin/

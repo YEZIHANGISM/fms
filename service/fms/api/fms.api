@@ -1,0 +1,26 @@
+syntax = "v1"
+
+type (
+	BillReq {
+		BookId    string `form:"bookId"`
+		StartedAt int64  `form:"startAt"`
+		EndedAt   int64  `form:"endedAt"`
+	}
+
+	BillReply {
+		Id       string `json:"id"`
+		BillType string `json:"billType"`
+		Amount   int    `json:"amount"`
+		Remark   string `json:"remark"`
+		AssetIn  string `json:"assetIn"`
+		AssetOut string `json:"assetOut"`
+	}
+)
+
+@server(
+	prefix: fms
+)
+service fms {
+	@handler listBill
+	get /bill (BillReq) returns (BillReply)
+}
