@@ -1,4 +1,5 @@
 # generated dir
 .idea/
+.vscode/
 
 service/**/bin/

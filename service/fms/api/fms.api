@@ -7,13 +7,17 @@ type (
 		EndedAt   int64  `form:"endedAt"`
 	}
 
-	BillReply {
+	Bill {
 		Id       string `json:"id"`
 		BillType string `json:"billType"`
 		Amount   int    `json:"amount"`
 		Remark   string `json:"remark"`
 		AssetIn  string `json:"assetIn"`
 		AssetOut string `json:"assetOut"`
+	}
+
+	BillListReply {
+		Bills []Bill `json:"bills"`
 	}
 )
 
@@ -22,5 +26,5 @@ type (
 )
 service fms {
 	@handler listBill
-	get /bill (BillReq) returns (BillReply)
+	get /bill (BillReq) returns (BillListReply)
 }

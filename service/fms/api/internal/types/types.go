@@ -7,11 +7,15 @@ type BillReq struct {
 	EndedAt   int64  `form:"endedAt"`
 }
 
-type BillReply struct {
+type Bill struct {
 	Id       string `json:"id"`
 	BillType string `json:"billType"`
 	Amount   int    `json:"amount"`
 	Remark   string `json:"remark"`
 	AssetIn  string `json:"assetIn"`
 	AssetOut string `json:"assetOut"`
+}
+
+type BillListReply struct {
+	Bills []Bill `json:"bills"`
 }
