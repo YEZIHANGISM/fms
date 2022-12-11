@@ -65,11 +65,6 @@ CREATE TABLE `fms`.`debt` (
   `id` varchar(64) UNIQUE,
   `debt_type` varchar(255) NOT NULL,
   `object` varchar(255) NOT NULL,
-  `amount` int NOT NULL,
-  `repay_amount` int NOT NULL,
-  `unit` varchar(255) NOT NULL DEFAULT "FEN",
-  `pay_date` datetime,
-  `repay_date` datetime,
   `count_into` boolean,
   `ended` boolean,
   `created_at` datetime DEFAULT (now()),
@@ -77,6 +72,3 @@ CREATE TABLE `fms`.`debt` (
   `is_deleted` boolean DEFAULT false,
   PRIMARY KEY ( `id` )
 );
-
--- insert init data
-INSERT INTO `fms`.`bill` (`id`, `category_id`, `billbook_id`, `bill_type`, `amount`) VALUES("test", "test", "test", "change", 100);

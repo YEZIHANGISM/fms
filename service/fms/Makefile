@@ -8,7 +8,7 @@ TAG         = latest
 DOCKERFILE  = fms.Dockerfile
 IMG_CONTEXT = .
 
-all: tidy codegen bufgen
+all: tidy codegen modelgen
 	cd ${APIDIR} && go build -o ${BINDIR}/${TARGET}
 
 tidy:
@@ -17,8 +17,5 @@ tidy:
 codegen:
 	cd ${APIDIR} && ${GOCTL} api go -api fms.api -dir .
 
-bufgen:
+modelgen:
 	cd ${MODELDIR} && ${GOCTL} model mysql ddl -src fms.sql -dir .
-
-${TARGET}-image:
-	cd ${CURDIR} && docker build -t ${TARGET}:${TAG} -f ${DOCKERFILE} ${IMG_CONTEXT}

@@ -18,8 +18,8 @@ import (
 var (
 	assetFieldNames          = builder.RawFieldNames(&Asset{})
 	assetRows                = strings.Join(assetFieldNames, ",")
-	assetRowsExpectAutoSet   = strings.Join(stringx.Remove(assetFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), ",")
-	assetRowsWithPlaceHolder = strings.Join(stringx.Remove(assetFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
+	assetRowsExpectAutoSet   = strings.Join(stringx.Remove(assetFieldNames, "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), ",")
+	assetRowsWithPlaceHolder = strings.Join(stringx.Remove(assetFieldNames, "`id`", "`update_time`", "`create_at`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`"), "=?,") + "=?"
 )
 
 type (

@@ -1,4 +1,4 @@
-CREATE SCHEMA `fms`;
+CREATE DATABASE IF NOT EXISTS `fms` DEFAULT CHARSET utf8;
 
 CREATE TABLE `fms`.`billbook` (
   `id` varchar(64) UNIQUE,
@@ -65,11 +65,6 @@ CREATE TABLE `fms`.`debt` (
   `id` varchar(64) UNIQUE,
   `debt_type` varchar(255) NOT NULL,
   `object` varchar(255) NOT NULL,
-  `amount` int NOT NULL,
-  `repay_amount` int NOT NULL,
-  `unit` varchar(255) NOT NULL DEFAULT "FEN",
-  `pay_date` datetime,
-  `repay_date` datetime,
   `count_into` boolean,
   `ended` boolean,
   `created_at` datetime DEFAULT (now()),

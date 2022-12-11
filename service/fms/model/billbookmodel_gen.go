@@ -18,8 +18,8 @@ import (
 var (
 	billbookFieldNames          = builder.RawFieldNames(&Billbook{})
 	billbookRows                = strings.Join(billbookFieldNames, ",")
-	billbookRowsExpectAutoSet   = strings.Join(stringx.Remove(billbookFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), ",")
-	billbookRowsWithPlaceHolder = strings.Join(stringx.Remove(billbookFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
+	billbookRowsExpectAutoSet   = strings.Join(stringx.Remove(billbookFieldNames, "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`"), ",")
+	billbookRowsWithPlaceHolder = strings.Join(stringx.Remove(billbookFieldNames, "`id`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`", "`create_time`"), "=?,") + "=?"
 )
 
 type (

@@ -18,8 +18,8 @@ import (
 var (
 	debtFieldNames          = builder.RawFieldNames(&Debt{})
 	debtRows                = strings.Join(debtFieldNames, ",")
-	debtRowsExpectAutoSet   = strings.Join(stringx.Remove(debtFieldNames, "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), ",")
-	debtRowsWithPlaceHolder = strings.Join(stringx.Remove(debtFieldNames, "`id`", "`created_at`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`"), "=?,") + "=?"
+	debtRowsExpectAutoSet   = strings.Join(stringx.Remove(debtFieldNames, "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), ",")
+	debtRowsWithPlaceHolder = strings.Join(stringx.Remove(debtFieldNames, "`id`", "`create_time`", "`update_at`", "`updated_at`", "`update_time`", "`create_at`", "`created_at`"), "=?,") + "=?"
 )
 
 type (
@@ -37,19 +37,14 @@ type (
 	}
 
 	Debt struct {
-		Id          string       `db:"id"`
-		DebtType    string       `db:"debt_type"`
-		Object      string       `db:"object"`
-		Amount      int64        `db:"amount"`
-		RepayAmount int64        `db:"repay_amount"`
-		Unit        string       `db:"unit"`
-		PayDate     sql.NullTime `db:"pay_date"`
-		RepayDate   sql.NullTime `db:"repay_date"`
-		CountInto   sql.NullBool `db:"count_into"`
-		Ended       sql.NullBool `db:"ended"`
-		CreatedAt   time.Time    `db:"created_at"`
-		UpdatedAt   sql.NullTime `db:"updated_at"`
-		IsDeleted   bool         `db:"is_deleted"`
+		Id        string       `db:"id"`
+		DebtType  string       `db:"debt_type"`
+		Object    string       `db:"object"`
+		CountInto sql.NullBool `db:"count_into"`
+		Ended     sql.NullBool `db:"ended"`
+		CreatedAt time.Time    `db:"created_at"`
+		UpdatedAt sql.NullTime `db:"updated_at"`
+		IsDeleted bool         `db:"is_deleted"`
 	}
 )
 
@@ -95,14 +90,14 @@ func (m *defaultDebtModel) FindOneById(ctx context.Context, id string) (*Debt, e
 }
 
 func (m *defaultDebtModel) Insert(ctx context.Context, data *Debt) (sql.Result, error) {
-	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", m.table, debtRowsExpectAutoSet)
-	ret, err := m.conn.ExecCtx(ctx, query, data.Id, data.DebtType, data.Object, data.Amount, data.RepayAmount, data.Unit, data.PayDate, data.RepayDate, data.CountInto, data.Ended, data.IsDeleted)
+	query := fmt.Sprintf("insert into %s (%s) values (?, ?, ?, ?, ?, ?)", m.table, debtRowsExpectAutoSet)
+	ret, err := m.conn.ExecCtx(ctx, query, data.Id, data.DebtType, data.Object, data.CountInto, data.Ended, data.IsDeleted)
 	return ret, err
 }
 
 func (m *defaultDebtModel) Update(ctx context.Context, newData *Debt) error {
 	query := fmt.Sprintf("update %s set %s where `id` = ?", m.table, debtRowsWithPlaceHolder)
-	_, err := m.conn.ExecCtx(ctx, query, newData.DebtType, newData.Object, newData.Amount, newData.RepayAmount, newData.Unit, newData.PayDate, newData.RepayDate, newData.CountInto, newData.Ended, newData.IsDeleted, newData.Id)
+	_, err := m.conn.ExecCtx(ctx, query, newData.DebtType, newData.Object, newData.CountInto, newData.Ended, newData.IsDeleted, newData.Id)
 	return err
 }
 
