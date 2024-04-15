@@ -10,10 +10,10 @@ IMG_CONTEXT = .
 PG_URL      = "postgres://postgres:postgres@127.0.0.1:5432/fms?sslmode=disable"
 
 all: tidy codegen modelgen
-	cd ${APIDIR} && go build -o ${BINDIR}/${TARGET}
+	cd ${APIDIR} && rm -f ${BINDIR}/${TARGET} && go build -o ${BINDIR}/${TARGET}
 
 tidy:
-	cd ${CURDIR}../../ && go mod tidy
+	cd ${CURDIR}../../ && rm -f go.sum && go mod tidy
 
 codegen:
 	cd ${APIDIR} && ${GOCTL} api go -api fms.api -dir .

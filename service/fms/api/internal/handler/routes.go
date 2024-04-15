@@ -14,10 +14,10 @@ func RegisterHandlers(server *rest.Server, serverCtx *svc.ServiceContext) {
 		[]rest.Route{
 			{
 				Method:  http.MethodGet,
-				Path:    "/bill",
+				Path:    "/bills",
 				Handler: listBillHandler(serverCtx),
 			},
 		},
-		rest.WithPrefix("/fms"),
+		rest.WithPrefix("/fms/v1.1"),
 	)
 }

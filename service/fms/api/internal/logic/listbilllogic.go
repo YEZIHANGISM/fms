@@ -5,10 +5,8 @@ import (
 
 	"fms/service/fms/api/internal/svc"
 	"fms/service/fms/api/internal/types"
-	"fms/service/fms/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
-	"github.com/zeromicro/go-zero/core/stores/sqlx"
 )
 
 type ListBillLogic struct {
@@ -26,37 +24,19 @@ func NewListBillLogic(ctx context.Context, svcCtx *svc.ServiceContext) *ListBill
 }
 
 func (l *ListBillLogic) ListBill(req *types.BillReq) (resp *types.BillListReply, err error) {
-	conn := sqlx.NewMysql(l.svcCtx.Config.DataSource)
-	billModel := model.NewBillModel(conn)
-
-	queryCond := &model.BillCond{
-		BookId:    req.BookId,
-		StartedAt: &req.StartedAt,
-		EndedAt:   &req.EndedAt,
-		PageNum:   req.PageNum,
-		PageSize:  req.PageSize,
-	}
-	bills, err := billModel.FindMany(queryCond)
-	if err != nil {
-		logx.Errorf("Failed to list bills, error: %s", err.Error())
-		return
-	}
-
 	resp = &types.BillListReply{
 		Bills: make([]types.Bill, 0),
 	}
 
-	for _, bill := range bills {
-		rep := &types.Bill{
-			Id:       bill.Id,
-			BillType: bill.BillType,
-			Amount:   int(bill.Amount),
-			AssetIn:  bill.AssetInId.String,
-			AssetOut: bill.AssetOutId.String,
-			Remark:   bill.Remark.String,
-		}
-		resp.Bills = append(resp.Bills, *rep)
+	rep := &types.Bill{
+		Id:       1,
+		BillType: "income",
+		Amount:   -123.12,
+		AssetIn:  "",
+		AssetOut: "cash",
+		Remark:   "test",
 	}
+	resp.Bills = append(resp.Bills, *rep)
 
 	return
 }

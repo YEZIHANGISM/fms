@@ -6,16 +6,17 @@ type BillReq struct {
 	StartedAt int64  `form:"startAt,optional"`
 	EndedAt   int64  `form:"endedAt,optional"`
 	PageNum   int64  `form:"pageNum,optional,default=0"`
-	PageSize  int64  `form:"pageSize,optional,default=100"`
+	PageSize  int64  `form:"pageSize,optional,default=50"`
 }
 
 type Bill struct {
-	Id       string `json:"id"`
-	BillType string `json:"billType"`
-	Amount   int    `json:"amount"`
-	Remark   string `json:"remark"`
-	AssetIn  string `json:"assetIn"`
-	AssetOut string `json:"assetOut"`
+	Id       int     `json:"id"`
+	BillType string  `json:"billType"`
+	Amount   float64 `json:"amount"`
+	Remark   string  `json:"remark"`
+	Category int     `json:"category"`
+	AssetIn  string  `json:"assetIn"`
+	AssetOut string  `json:"assetOut"`
 }
 
 type BillListReply struct {
