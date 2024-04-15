@@ -8,6 +8,7 @@ import (
 	"fms/service/fms/model"
 	"fmt"
 	"math/rand"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/google/uuid"
@@ -175,6 +176,7 @@ func genMockData() {
 				BillType:   randStr(),
 				Amount:     100,
 				Remark:     sql.NullString{String: uuid.NewString(), Valid: true},
+				BillTime:   time.Now().UTC(),
 			}
 			insertBill(data)
 		}

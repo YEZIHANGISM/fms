@@ -55,6 +55,7 @@ CREATE TABLE `fms`.`bill` (
   `amount` int NOT NULL,
   `unit` varchar(255) NOT NULL DEFAULT "FEN",
   `remark` varchar(255),
+  `bill_time` datetime NOT NULL,
   `created_at` datetime DEFAULT (now()),
   `updated_at` datetime,
   `is_deleted` boolean DEFAULT false,

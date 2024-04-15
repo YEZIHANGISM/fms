@@ -29,7 +29,14 @@ func (l *ListBillLogic) ListBill(req *types.BillReq) (resp *types.BillListReply,
 	conn := sqlx.NewMysql(l.svcCtx.Config.DataSource)
 	billModel := model.NewBillModel(conn)
 
-	bills, err := billModel.FindMany(l.ctx)
+	queryCond := &model.BillCond{
+		BookId:    req.BookId,
+		StartedAt: &req.StartedAt,
+		EndedAt:   &req.EndedAt,
+		PageNum:   req.PageNum,
+		PageSize:  req.PageSize,
+	}
+	bills, err := billModel.FindMany(queryCond)
 	if err != nil {
 		logx.Errorf("Failed to list bills, error: %s", err.Error())
 		return
@@ -44,9 +51,9 @@ func (l *ListBillLogic) ListBill(req *types.BillReq) (resp *types.BillListReply,
 			Id:       bill.Id,
 			BillType: bill.BillType,
 			Amount:   int(bill.Amount),
-			AssetIn:  "",
-			AssetOut: "",
-			Remark:   "",
+			AssetIn:  bill.AssetInId.String,
+			AssetOut: bill.AssetOutId.String,
+			Remark:   bill.Remark.String,
 		}
 		resp.Bills = append(resp.Bills, *rep)
 	}

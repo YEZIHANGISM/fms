@@ -1,11 +1,18 @@
 version: '1.0.0'
 services:
-  fms-mysql:
+  # fms-mysql:
+  #   build:
+  #     context: ../../service/mysql/
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "3306:3306"
+  
+  fms-postgres:
     build:
-      context: ../../service/mysql/
+      context: ../../service/postgres/
       dockerfile: Dockerfile
     ports:
-      - "3306:3306"
+      - "5432:5432"
 
   fms:
     build:

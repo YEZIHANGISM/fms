@@ -7,6 +7,7 @@ TARGET      = fms
 TAG         = latest
 DOCKERFILE  = fms.Dockerfile
 IMG_CONTEXT = .
+PG_URL      = "postgres://postgres:postgres@127.0.0.1:5432/fms?sslmode=disable"
 
 all: tidy codegen modelgen
 	cd ${APIDIR} && go build -o ${BINDIR}/${TARGET}
@@ -18,4 +19,5 @@ codegen:
 	cd ${APIDIR} && ${GOCTL} api go -api fms.api -dir .
 
 modelgen:
-	cd ${MODELDIR} && ${GOCTL} model mysql ddl -src fms.sql -dir .
+	# cd ${MODELDIR} && ${GOCTL} model mysql ddl -src fms.sql -dir .
+	cd ${MODELDIR} && rm -f ${MODELDIR}/* && ${GOCTL} model pg datasource --table="*" --url ${PG_URL} -d .

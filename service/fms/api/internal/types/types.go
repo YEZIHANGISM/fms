@@ -3,8 +3,10 @@ package types
 
 type BillReq struct {
 	BookId    string `form:"bookId"`
-	StartedAt int64  `form:"startAt"`
-	EndedAt   int64  `form:"endedAt"`
+	StartedAt int64  `form:"startAt,optional"`
+	EndedAt   int64  `form:"endedAt,optional"`
+	PageNum   int64  `form:"pageNum,optional,default=0"`
+	PageSize  int64  `form:"pageSize,optional,default=100"`
 }
 
 type Bill struct {
@@ -17,5 +19,8 @@ type Bill struct {
 }
 
 type BillListReply struct {
-	Bills []Bill `json:"bills"`
+	Bills    []Bill `json:"bills"`
+	PageNum  int64  `json:"pageNum"`
+	PageSize int64  `json:"PageSize"`
+	Count    int64  `json:"count"`
 }
