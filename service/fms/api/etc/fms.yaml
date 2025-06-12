@@ -1,5 +1,0 @@
-Name: fms
-Host: 0.0.0.0
-Port: 8888
-# DataSource: root:mysql@tcp(host.docker.internal:3306)/fms?parseTime=true
-DataSource: postgres:postgres@tcp(host.docker.internal:5432)/fms?parseTime=True
