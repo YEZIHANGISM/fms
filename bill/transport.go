@@ -11,22 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func ListBillHandler(svc BillService, logger log.Logger) *httptransport.Server {
-
-	opts := []httptransport.ServerOption{
-		httptransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
-		// httptransport.ServerErrorEncoder(encodeError),
-	}
-	billHandler := httptransport.NewServer(
-		makelistBillEndpoint(svc),
-		decodelistBillRequest,
-		encodeResponse,
-		opts...,
-	)
-	return billHandler
-}
-
-func BuildHandler(svc BillService, logger log.Logger) http.Handler {
+func InitBillRouter(r *mux.Router, svc BillService, logger log.Logger) {
 	// 添加错误日志打印
 	opts := []httptransport.ServerOption{
 		httptransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
@@ -39,10 +24,8 @@ func BuildHandler(svc BillService, logger log.Logger) http.Handler {
 		opts...,
 	)
 
-	r := mux.NewRouter()
-	r.Handle("/bills", billHandler).Methods("GET")
-
-	return r
+	sr := r.PathPrefix("/bill/v1/").Subrouter()
+	sr.Handle("/bills", billHandler).Methods("GET")
 }
 
 // type listBillRequest struct{}

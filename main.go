@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/go-kit/log"
+	"github.com/gorilla/mux"
 )
 
 func main() {
@@ -24,12 +25,10 @@ func main() {
 	svc := bill.NewBillService()
 	svc = bill.LoggingService(logger, svc)
 
-	mux := http.NewServeMux()
-	// FIXME: 为什么下面的语句不生效？请求的时候会404
-	// mux.Handle("/bill/v1/", bill.BuildHandler(svc, logger))
-	mux.Handle("/bills", bill.ListBillHandler(svc, logger))
+	r := mux.NewRouter()
+	bill.InitBillRouter(r, svc, logger)
 
-	http.Handle("/", mux)
+	http.Handle("/", r)
 
 	logger.Log("msg", "HTTP", "addr", *listen)
 	logger.Log("err", http.ListenAndServe(*listen, nil))
