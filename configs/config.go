@@ -26,13 +26,14 @@ type FMSConfig struct {
 }
 
 type Log struct {
-	Path  string `mapstructure:"path"`
-	Level string `mapstructure:"level"`
+	LogFile string `mapstructure:"logFile"`
+	Level   string `mapstructure:"level"`
 }
 
 type Basic struct {
 	Address string `mapstructure:"address"`
 	Port    string `mapstructure:"port"`
+	Debug   bool   `mapstructure:"debug"`
 }
 
 func (b *Basic) FullAddr() string {

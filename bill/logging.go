@@ -2,30 +2,34 @@ package bill
 
 import (
 	"context"
+	fmslog "fms/log"
 	"time"
 
-	"github.com/go-kit/log"
+	"go.uber.org/zap"
 )
 
 type loggingMiddleware struct {
-	logger log.Logger
+	logger zap.SugaredLogger
 	next   BillService
 }
 
-func LoggingService(logger log.Logger, svc BillService) BillService {
+func LoggingService(svc BillService) BillService {
 	return loggingMiddleware{
 		next:   svc,
-		logger: logger,
+		logger: *fmslog.SLogger,
 	}
 }
 
 func (mw loggingMiddleware) ListBill(ctx context.Context) (data []Bill, err error) {
 	defer func(begin time.Time) {
-		mw.logger.Log(
-			"method", "uppercase",
-			"data", data,
-			"err", err,
-			"took", time.Since(begin),
+		mw.logger.Infof(
+			"message: listBill, "+
+				"data: %v, "+
+				"err: %v, "+
+				"took: %v",
+			data,
+			err,
+			time.Since(begin),
 		)
 	}(time.Now())
 	data, err = mw.next.ListBill(ctx)

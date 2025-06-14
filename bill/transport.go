@@ -5,23 +5,15 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/go-kit/kit/transport"
 	httptransport "github.com/go-kit/kit/transport/http"
-	"github.com/go-kit/log"
 	"github.com/gorilla/mux"
 )
 
-func InitBillRouter(r *mux.Router, svc BillService, logger log.Logger) {
-	// 添加错误日志打印
-	opts := []httptransport.ServerOption{
-		httptransport.ServerErrorHandler(transport.NewLogErrorHandler(logger)),
-		// httptransport.ServerErrorEncoder(encodeError),
-	}
+func InitBillRouter(r *mux.Router, svc BillService) {
 	billHandler := httptransport.NewServer(
 		makelistBillEndpoint(svc),
 		decodelistBillRequest,
 		encodeResponse,
-		opts...,
 	)
 
 	sr := r.PathPrefix("/bill/v1/").Subrouter()

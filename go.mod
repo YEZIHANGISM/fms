@@ -4,7 +4,6 @@ go 1.24.3
 
 require (
 	github.com/go-kit/kit v0.13.0
-	github.com/go-kit/log v0.2.1
 	github.com/gorilla/mux v1.8.1
 	github.com/spf13/viper v1.20.1
 	go.uber.org/zap v1.19.1
@@ -12,6 +11,7 @@ require (
 
 require (
 	github.com/fsnotify/fsnotify v1.8.0 // indirect
+	github.com/go-kit/log v0.2.1 // indirect
 	github.com/go-logfmt/logfmt v0.5.1 // indirect
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
