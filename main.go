@@ -4,10 +4,11 @@ import (
 	"flag"
 	"fms/bill"
 	"net/http"
-	"os"
 
-	"github.com/go-kit/log"
+	kitzap "github.com/go-kit/kit/log/zap"
 	"github.com/gorilla/mux"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 func main() {
@@ -15,12 +16,13 @@ func main() {
 	listen := flag.String("listen", ":8080", "HTTP listen address")
 	flag.Parse()
 
-	// TODO: 使用zap库
 	// TODO: 放在全局变量中初始化，这样就不用到处传了
-	logger := log.NewLogfmtLogger(os.Stderr)
-	// 设置日志的格式，打印更多有用信息
-	logger = log.With(logger, "ts", log.DefaultTimestampUTC)
-	logger = log.With(logger, "caller", log.DefaultCaller)
+	zapLogger, err := zap.NewDevelopment()
+	if err != nil {
+		panic(err)
+	}
+	// go-kit/log/zap，内置了zap库的支持
+	logger := kitzap.NewZapSugarLogger(zapLogger, zapcore.DebugLevel)
 
 	svc := bill.NewBillService()
 	svc = bill.LoggingService(logger, svc)
