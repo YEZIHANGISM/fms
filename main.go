@@ -1,8 +1,8 @@
 package main
 
 import (
-	"flag"
 	"fms/bill"
+	"fms/configs"
 	"net/http"
 
 	kitzap "github.com/go-kit/kit/log/zap"
@@ -12,9 +12,7 @@ import (
 )
 
 func main() {
-	// TODO: 放在配置文件中初始化
-	listen := flag.String("listen", ":8080", "HTTP listen address")
-	flag.Parse()
+	configs.InitFmsConfig()
 
 	// TODO: 放在全局变量中初始化，这样就不用到处传了
 	zapLogger, err := zap.NewDevelopment()
@@ -32,6 +30,7 @@ func main() {
 
 	http.Handle("/", r)
 
-	logger.Log("msg", "HTTP", "addr", *listen)
-	logger.Log("err", http.ListenAndServe(*listen, nil))
+	addr := configs.Config.Basic.FullAddr()
+	logger.Log("msg", "HTTP", "addr", addr)
+	logger.Log("err", http.ListenAndServe(addr, nil))
 }

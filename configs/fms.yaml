@@ -1,0 +1,7 @@
+basic:
+  address: localhost
+  port: 8080
+
+log:
+  path: ./fms.log
+  level: DEBUG
