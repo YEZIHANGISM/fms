@@ -26,8 +26,9 @@ type FMSConfig struct {
 }
 
 type Log struct {
-	LogFile string `mapstructure:"logFile"`
-	Level   string `mapstructure:"level"`
+	OutputPaths []string `mapstructure:"outputPaths"`
+	Level       string   `mapstructure:"level"`
+	Encoding    string   `mapstructure:"encoding"`
 }
 
 type Basic struct {

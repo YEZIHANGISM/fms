@@ -4,5 +4,10 @@ basic:
   debug: true
 
 log:
-  logFile: fms.log
+  # Log file path
+  outputPaths:
+    - stdout
+    - log/fms.log
   level: debug
+  # Log format, options: json, console
+  encoding: json
