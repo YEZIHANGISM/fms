@@ -7,7 +7,14 @@ log:
   # Log file path
   outputPaths:
     - stdout
-    - log/fms.log
+    - /ism/log/fms.log
   level: debug
   # Log format, options: json, console
   encoding: json
+
+database:
+  host: "fms-postgres-postgresql"
+  port: 5432
+  user: postgres
+  dbname: postgres
+  sslmode: disable

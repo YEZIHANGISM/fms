@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/viper"
@@ -23,6 +24,15 @@ var Config FMSConfig
 type FMSConfig struct {
 	Basic Basic `mapstructure:"basic"`
 	Log   Log   `mapstructure:"log"`
+	DB    DB    `mapstructure:"database"`
+}
+
+type DB struct {
+	Host    string `mapstructure:"host"`
+	Port    int    `mapstructure:"port"`
+	User    string `mapstructure:"user"`
+	Dbname  string `mapstructure:"dbname"`
+	SSLMode string `mapstructure:"sslmode"`
 }
 
 type Log struct {
@@ -39,4 +49,9 @@ type Basic struct {
 
 func (b *Basic) FullAddr() string {
 	return b.Address + ":" + b.Port
+}
+
+func (d *DB) DataSourceName(password string) string {
+	return fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
+		d.User, password, d.Host, d.Port, d.Dbname, d.SSLMode)
 }

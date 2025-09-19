@@ -3,6 +3,7 @@ package main
 import (
 	"fms/bill"
 	"fms/configs"
+	"fms/database"
 	fmslog "fms/log"
 	"net/http"
 
@@ -13,6 +14,8 @@ func main() {
 	configs.InitFmsConfig()
 
 	fmslog.InitLogger()
+
+	database.InitDB()
 
 	svc := bill.NewBillService()
 	svc = bill.LoggingService(svc)

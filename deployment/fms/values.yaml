@@ -108,17 +108,22 @@ autoscaling:
   # targetMemoryUtilizationPercentage: 80
 
 # Additional volumes on the output Deployment definition.
-volumes: []
-# - name: foo
-#   secret:
-#     secretName: mysecret
-#     optional: false
+volumes:
+  - name: pg-secret-volume
+    secret:
+      secretName: fms-postgres-postgresql
+  - name: log-volume
+    hostPath:
+      path: /Users/yezihangism/workspace/fms/log
+      type: DirectoryOrCreate
 
 # Additional volumeMounts on the output Deployment definition.
-volumeMounts: []
-# - name: foo
-#   mountPath: "/etc/foo"
-#   readOnly: true
+volumeMounts:
+  - name: pg-secret-volume
+    mountPath: "/etc/pg-secret"
+    readOnly: true
+  - name: log-volume
+    mountPath: "/ism/log"
 
 nodeSelector: {}
 
