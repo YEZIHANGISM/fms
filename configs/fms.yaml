@@ -13,6 +13,7 @@ log:
   encoding: json
 
 database:
+  type: postgres
   host: "fms-postgres-postgresql"
   port: 5432
   user: postgres

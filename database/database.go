@@ -5,20 +5,32 @@ import (
 	"os"
 	"strings"
 
-	_ "github.com/jackc/pgx/v5/stdlib"
-	"github.com/jmoiron/sqlx"
+	fmslog "fms/log"
+
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
-var DB *sqlx.DB
+var DB *gorm.DB
 
 func InitDB() {
-	secretFile := "/etc/pg-secret/postgres-password"
-	password, err := os.ReadFile(secretFile)
+	password := getPassword()
+	dsn := configs.Config.DB.Dsn(&password)
+	var err error
+	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
+		fmslog.SLogger.Fatalf("failed to connect database: %v", err)
 		panic(err)
 	}
-	formatPwd := strings.TrimSpace(string(password))
+}
 
-	dataSource := configs.Config.DB.DataSourceName(formatPwd)
-	DB = sqlx.MustConnect("pgx", dataSource)
+func getPassword() string {
+	secret := "/etc/pg-secret/postgres-password"
+	password, err := os.ReadFile(secret)
+	if err != nil {
+		fmslog.SLogger.Fatalf("failed to read db password from secret: %v", err)
+		panic(err)
+	}
+	fmtPwd := strings.TrimSpace(string(password))
+	return fmtPwd
 }

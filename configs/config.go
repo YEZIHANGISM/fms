@@ -28,6 +28,7 @@ type FMSConfig struct {
 }
 
 type DB struct {
+	Type    string `mapstructure:"type"`
 	Host    string `mapstructure:"host"`
 	Port    int    `mapstructure:"port"`
 	User    string `mapstructure:"user"`
@@ -51,7 +52,11 @@ func (b *Basic) FullAddr() string {
 	return b.Address + ":" + b.Port
 }
 
-func (d *DB) DataSourceName(password string) string {
-	return fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
-		d.User, password, d.Host, d.Port, d.Dbname, d.SSLMode)
+func (db *DB) Dsn(password *string) string {
+	dsn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s sslmode=%s",
+		db.Host, db.Port, db.User, db.Dbname, db.SSLMode)
+	if password != nil {
+		dsn += fmt.Sprintf(" password=%s", *password)
+	}
+	return dsn
 }
