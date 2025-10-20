@@ -22,6 +22,12 @@ func InitDB() {
 		fmslog.SLogger.Fatalf("failed to connect database: %v", err)
 		panic(err)
 	}
+
+	// 设置schema
+	if err := DB.Exec("SET search_path = fms;").Error; err != nil {
+		fmslog.SLogger.Fatalf("failed to set schema: %v", err)
+		panic(err)
+	}
 }
 
 func getPassword() string {

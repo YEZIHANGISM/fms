@@ -20,10 +20,10 @@ func LoggingService(svc BillService) BillService {
 	}
 }
 
-func (mw loggingMiddleware) ListBill(ctx context.Context) (data []Bill, err error) {
+func (mw loggingMiddleware) ListBills(ctx context.Context) (data []Bill, err error) {
 	defer func(begin time.Time) {
 		mw.logger.Infof(
-			"message: listBill, "+
+			"message: listBills, "+
 				"data: %v, "+
 				"err: %v, "+
 				"took: %v",
@@ -32,6 +32,22 @@ func (mw loggingMiddleware) ListBill(ctx context.Context) (data []Bill, err erro
 			time.Since(begin),
 		)
 	}(time.Now())
-	data, err = mw.next.ListBill(ctx)
+	data, err = mw.next.ListBills(ctx)
+	return
+}
+
+func (mw loggingMiddleware) CreateBill(ctx context.Context, bill CreateBillRequest) (err error) {
+	defer func(begin time.Time) {
+		mw.logger.Infof(
+			"message: createBill, "+
+				"bill: %v, "+
+				"err: %v, "+
+				"took: %v",
+			bill,
+			err,
+			time.Since(begin),
+		)
+	}(time.Now())
+	err = mw.next.CreateBill(ctx, bill)
 	return
 }

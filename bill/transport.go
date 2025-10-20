@@ -10,22 +10,23 @@ import (
 )
 
 func InitBillRouter(r *mux.Router, svc BillService) {
-	billHandler := httptransport.NewServer(
+	listBillHandler := httptransport.NewServer(
 		makelistBillEndpoint(svc),
 		decodelistBillRequest,
 		encodeResponse,
 	)
+	createBillHandler := httptransport.NewServer(
+		makeCreateBillEndpoint(svc),
+		decodeCreateBillRequest,
+		encodeResponse,
+	)
 
 	sr := r.PathPrefix("/bill/v1/").Subrouter()
-	sr.Handle("/bills", billHandler).Methods("GET")
+	sr.Handle("/bills", listBillHandler).Methods("GET")
+	sr.Handle("/bills", createBillHandler).Methods("POST")
 }
 
 // type listBillRequest struct{}
-
-type listBillResponse struct {
-	Data []Bill `json:"data"`
-	Err  string `json:"err,omitempty"`
-}
 
 func decodelistBillRequest(_ context.Context, r *http.Request) (interface{}, error) {
 	return nil, nil
@@ -38,4 +39,12 @@ func decodelistBillRequest(_ context.Context, r *http.Request) (interface{}, err
 
 func encodeResponse(_ context.Context, w http.ResponseWriter, response interface{}) error {
 	return json.NewEncoder(w).Encode(response)
+}
+
+func decodeCreateBillRequest(_ context.Context, r *http.Request) (interface{}, error) {
+	var request CreateBillRequest
+	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
+		return nil, err
+	}
+	return request, nil
 }
